@@ -1,11 +1,16 @@
-import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
+import { useAppDispatch, useAppSelector } from './app/hooks'
+import {
+  addEnthusiasm,
+  resetGreeting,
+} from './features/greeting/greetingSlice'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const dispatch = useAppDispatch()
+  const { message, enthusiasm } = useAppSelector((state) => state.greeting)
 
   return (
     <>
@@ -16,18 +21,31 @@ function App() {
           <img src={viteLogo} className="vite" alt="Vite logo" />
         </div>
         <div>
-          <h1>Get started</h1>
+          <h1 aria-live="polite">
+            {message}
+            {'!'.repeat(enthusiasm)}
+          </h1>
           <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
+            This greeting is read from the Redux store with{' '}
+            <code>useAppSelector</code>.
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+        <div className="greeting-actions">
+          <button
+            type="button"
+            className="counter"
+            onClick={() => dispatch(addEnthusiasm())}
+          >
+            Dispatch addEnthusiasm
+          </button>
+          <button
+            type="button"
+            className="counter"
+            onClick={() => dispatch(resetGreeting())}
+          >
+            Reset
+          </button>
+        </div>
       </section>
 
       <div className="ticks"></div>

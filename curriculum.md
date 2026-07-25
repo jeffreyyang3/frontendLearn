@@ -759,6 +759,71 @@ A strong answer should cover:
 - A reducer must be pure and does not itself solve shared/global state.
 - Do not introduce it for a couple of independent booleans without a reason.
 
+### Very basic Redux Toolkit primer
+
+Redux is an external store for state that must be shared across distant parts of
+an application or updated through well-defined events. Modern Redux code should
+normally use Redux Toolkit (RTK), which supplies the standard store setup and
+removes most of the old hand-written Redux boilerplate.
+
+The core pieces are:
+
+- **Store:** holds the application's Redux state tree.
+- **Slice:** owns one domain's initial state, reducer logic, and generated action
+  creators.
+- **Action:** a plain object describing what happened, such as
+  `{ type: "greeting/addEnthusiasm" }`.
+- **Reducer:** calculates the next state from the current state and an action.
+- **Dispatch:** sends an action to the store.
+- **Selector:** reads or derives a value from store state.
+- **Provider:** makes the store available to React components.
+
+The one-way data flow is:
+
+1. A user interaction dispatches an action.
+2. The store runs the reducers with the current state and that action.
+3. RTK's Immer integration lets slice reducers use mutation-like syntax while
+   safely producing immutable state.
+4. Components whose selected values changed render again.
+
+This project's hello-world example follows that flow:
+
+- `src/app/store.ts` combines the slice reducers with `configureStore`.
+- `src/main.tsx` supplies the store through React Redux's `Provider`.
+- `src/features/greeting/greetingSlice.ts` defines the greeting state and
+  actions with `createSlice`.
+- `src/app/hooks.ts` exports typed dispatch and selector hooks.
+- `src/App.tsx` selects the greeting and dispatches `addEnthusiasm`.
+
+The essential component pattern is:
+
+```tsx
+const message = useAppSelector((state) => state.greeting.message);
+const dispatch = useAppDispatch();
+
+return (
+  <button onClick={() => dispatch(addEnthusiasm())}>
+    {message}
+  </button>
+);
+```
+
+Redux is not the default home for every value. Keep state local when only one
+small subtree needs it, use context for relatively stable tree-wide
+dependencies, and use a server-state library when request caching,
+revalidation, and deduplication are the main problem. Reach for Redux when
+shared client state, explicit event-driven transitions, middleware, or strong
+debugging tools justify the extra indirection.
+
+Primer exercise:
+
+1. Run the app and click **Dispatch addEnthusiasm**.
+2. Trace the click from `dispatch`, to the generated action, to the slice
+   reducer, to the selector-driven render.
+3. Add a `removeEnthusiasm` reducer that never lets the count fall below one.
+4. Explain why the reducer remains pure even though `state.enthusiasm += 1`
+   looks like mutation.
+
 Design exercise:
 
 Design a reusable `Dialog` API. Compare:
@@ -1569,6 +1634,8 @@ You should be able to answer each in under 90 seconds:
 - Ref versus state?
 - `useReducer` versus `useState`?
 - Context versus props?
+- When is Redux useful, and when is local state simpler?
+- What roles do actions, reducers, dispatch, and selectors play?
 - What makes a good custom hook?
 - `React.memo` versus `useMemo` versus `useCallback`?
 - How do you diagnose unnecessary renders?
@@ -1629,5 +1696,6 @@ into global state or a client-side effect.
 - [`useRef`](https://react.dev/reference/react/useRef)
 - [`StrictMode`](https://react.dev/reference/react/StrictMode)
 - [React TypeScript guide](https://react.dev/learn/typescript)
+- [Redux Toolkit quick start](https://redux-toolkit.js.org/tutorials/quick-start)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 - [MDN web platform documentation](https://developer.mozilla.org/)

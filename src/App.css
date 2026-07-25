@@ -17,6 +17,17 @@
   }
 }
 
+.greeting-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+
+  .counter {
+    margin-bottom: 24px;
+  }
+}
+
 .hero {
   position: relative;
 
