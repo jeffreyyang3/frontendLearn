@@ -1,14 +1,15 @@
 import type { ComponentType } from 'react'
 import TodoSolution from './01-todo/TodoSolution'
-import AutocompleteSolution from './02-autocomplete/AutocompleteSolution'
-import DialogSolution from './03-dialog/DialogSolution'
-import DataTableSolution from './04-data-table/DataTableSolution'
-import CartSolution from './05-cart/CartSolution'
-import RegistrationSolution from './06-registration/RegistrationSolution'
-import FetchHookSolution from './07-fetch-hook/FetchHookSolution'
+import FileExplorerSolution from './02-file-explorer/FileExplorerSolution'
+import DataTableSolution from './03-data-table/DataTableSolution'
+import CartSolution from './04-cart/CartSolution'
+import RegistrationSolution from './05-registration/RegistrationSolution'
+import FetchHookSolution from './06-fetch-hook/FetchHookSolution'
+import AutocompleteSolution from './07-autocomplete/AutocompleteSolution'
 import ToastsSolution from './08-toasts/ToastsSolution'
 import ActivityFeedSolution from './09-activity-feed/ActivityFeedSolution'
-import FileExplorerSolution from './10-file-explorer/FileExplorerSolution'
+import DialogSolution from './10-dialog/DialogSolution'
+import PokeApiSolution from './11-pokeapi/PokeApiSolution'
 
 export type ProblemDefinition = {
   number: number
@@ -26,7 +27,7 @@ export type ProblemDefinition = {
   Solution: ComponentType
 }
 
-export const problems: ProblemDefinition[] = [
+const problemDefinitions: ProblemDefinition[] = [
   {
     number: 1,
     slug: '01-todo',
@@ -34,6 +35,7 @@ export const problems: ProblemDefinition[] = [
     duration: '35–50 min',
     description: [
       'Build a todo list that lets a user add, complete, search, filter, and delete tasks.',
+      'Tests React fundamentals: controlled forms, immutable list updates, stable identity, semantic controls, and deciding which values are source state versus data derived during render.',
     ],
     codeIntro: 'Start with this type:',
     code: `type Todo = {
@@ -65,12 +67,13 @@ export const problems: ProblemDefinition[] = [
     Solution: TodoSolution,
   },
   {
-    number: 2,
-    slug: '02-autocomplete',
+    number: 7,
+    slug: '07-autocomplete',
     title: 'Debounced Autocomplete',
     duration: '35–50 min',
     description: [
       'Build an accessible search box that requests suggestions after the user pauses typing.',
+      'Tests effect lifecycle and browser interaction: debounce timer ownership, cleanup, stale closures, request races, cancellation, keyboard navigation, mouse interaction, and ARIA combobox semantics.',
     ],
     codeIntro: 'Use the provided mock API:',
     code: `import {
@@ -97,16 +100,17 @@ export const problems: ProblemDefinition[] = [
       'How would you test the debounce without making the test suite slow?',
     ],
     solutionPath:
-      'src/problems/02-autocomplete/AutocompleteSolution.tsx',
+      'src/problems/07-autocomplete/AutocompleteSolution.tsx',
     Solution: AutocompleteSolution,
   },
   {
-    number: 3,
-    slug: '03-dialog',
+    number: 10,
+    slug: '10-dialog',
     title: 'Accessible Modal Dialog',
     duration: '35–50 min',
     description: [
       'Build a reusable modal dialog that can contain arbitrary React children.',
+      'Tests advanced React and browser behavior: portals, DOM focus management, event propagation, document-level listeners, effect cleanup, keyboard trapping, focus restoration, and modal accessibility semantics.',
     ],
     codeIntro: 'Target usage:',
     code: `<Dialog
@@ -135,16 +139,17 @@ export const problems: ProblemDefinition[] = [
       'When would the native <dialog> element be preferable?',
       'What additional work is needed to prevent interaction with background content?',
     ],
-    solutionPath: 'src/problems/03-dialog/DialogSolution.tsx',
+    solutionPath: 'src/problems/10-dialog/DialogSolution.tsx',
     Solution: DialogSolution,
   },
   {
-    number: 4,
-    slug: '04-data-table',
+    number: 3,
+    slug: '03-data-table',
     title: 'Sortable and Paginated Data Table',
     duration: '35–50 min',
     description: [
       'Build a reusable table for displaying, sorting, and paginating user records.',
+      'Tests React fundamentals: prop immutability, derived sorting and pagination, coordinated state transitions, boundary calculations, semantic tables, and judgment about when memoization is useful.',
     ],
     codeIntro: 'Use this data shape:',
     code: `type User = {
@@ -173,16 +178,17 @@ export const problems: ProblemDefinition[] = [
       'How would the design change for server-side sorting and pagination?',
       'How would you virtualize tens of thousands of client-side rows?',
     ],
-    solutionPath: 'src/problems/04-data-table/DataTableSolution.tsx',
+    solutionPath: 'src/problems/03-data-table/DataTableSolution.tsx',
     Solution: DataTableSolution,
   },
   {
-    number: 5,
-    slug: '05-cart',
+    number: 4,
+    slug: '04-cart',
     title: 'Shopping Cart with a Reducer',
     duration: '35–50 min',
     description: [
       'Build a shopping cart whose related state transitions are managed by a reducer.',
+      'Tests React fundamentals: reducer and action design, immutable updates, state invariants, derived totals, stable identity, and representing money without floating-point errors.',
     ],
     codeIntro: 'Use these types:',
     code: `type Product = {
@@ -215,15 +221,18 @@ type CartItem = {
       'What tests would you write directly against the reducer?',
       'When would moving this reducer into Redux Toolkit be justified?',
     ],
-    solutionPath: 'src/problems/05-cart/CartSolution.tsx',
+    solutionPath: 'src/problems/04-cart/CartSolution.tsx',
     Solution: CartSolution,
   },
   {
-    number: 6,
-    slug: '06-registration',
+    number: 5,
+    slug: '05-registration',
     title: 'Multi-Step Registration Form',
     duration: '35–50 min',
-    description: ['Build a three-step registration form:'],
+    description: [
+      'Build a three-step registration form:',
+      'Tests controlled-form architecture, multi-step state modeling, validation timing, preserving state across conditional views, asynchronous submission states, and preventing duplicate work.',
+    ],
     steps: [
       'Account: email and password',
       'Profile: display name and role',
@@ -259,16 +268,17 @@ declare function register(
       'How would you warn users before navigating away with unsaved changes?',
     ],
     solutionPath:
-      'src/problems/06-registration/RegistrationSolution.tsx',
+      'src/problems/05-registration/RegistrationSolution.tsx',
     Solution: RegistrationSolution,
   },
   {
-    number: 7,
-    slug: '07-fetch-hook',
+    number: 6,
+    slug: '06-fetch-hook',
     title: 'Reusable Data-Fetching Hook',
     duration: '35–50 min',
     description: [
       'Implement a reusable useFetchJson hook and a component that demonstrates it.',
+      'Tests effect lifecycle and reusable hook design: dependency management, asynchronous state machines, AbortController cleanup, stale requests, refetch triggers, generic TypeScript APIs, and stable callback behavior.',
     ],
     codeIntro: 'Target API:',
     code: `type FetchState<T> =
@@ -299,7 +309,7 @@ function useFetchJson<T>(
       'What limitations would this hook have compared with a server-state library?',
       'How would caching, deduplication, retries, or SSR affect the design?',
     ],
-    solutionPath: 'src/problems/07-fetch-hook/FetchHookSolution.tsx',
+    solutionPath: 'src/problems/06-fetch-hook/FetchHookSolution.tsx',
     Solution: FetchHookSolution,
   },
   {
@@ -309,6 +319,7 @@ function useFetchJson<T>(
     duration: '35–50 min',
     description: [
       'Build a toast system that any descendant component can use without passing callbacks through every intermediate component.',
+      'Tests lifecycle and application architecture: context and reducer APIs, provider boundaries, timer ownership, cleanup, stable function identities, context-driven rerenders, and assistive-technology announcements.',
     ],
     codeIntro: 'Target usage:',
     code: `function SaveButton() {
@@ -349,6 +360,7 @@ function useFetchJson<T>(
     duration: '35–50 min',
     description: [
       'Build an activity feed that loads the next page as the user nears the bottom.',
+      'Tests React lifecycle with browser APIs: IntersectionObserver ownership, refs versus state, effect cleanup, cursor-based async pagination, request deduplication, cancellation, retries, and append-only state updates.',
     ],
     codeIntro: 'Use this API contract:',
     code: `type Activity = {
@@ -390,11 +402,14 @@ declare function getActivities(
     Solution: ActivityFeedSolution,
   },
   {
-    number: 10,
-    slug: '10-file-explorer',
+    number: 2,
+    slug: '02-file-explorer',
     title: 'Nested File Explorer',
     duration: '35–50 min',
-    description: ['Build an interactive file explorer from nested data.'],
+    description: [
+      'Build an interactive file explorer from nested data.',
+      'Tests React fundamentals: recursive component composition, stable keys, immutable UI state kept separate from props, preserving independent folder state, lifting selection state, and accessible interactive controls.',
+    ],
     codeIntro: 'Use this type:',
     code: `type FileNode =
   | {
@@ -429,10 +444,65 @@ declare function getActivities(
       'How would you efficiently render a very large tree?',
     ],
     solutionPath:
-      'src/problems/10-file-explorer/FileExplorerSolution.tsx',
+      'src/problems/02-file-explorer/FileExplorerSolution.tsx',
     Solution: FileExplorerSolution,
   },
+  {
+    number: 11,
+    slug: '11-pokeapi',
+    title: 'Pokémon Stat Viewer',
+    duration: '25–40 min',
+    description: [
+      'Build a small data explorer that fetches a Pokémon by name or Pokédex number and turns its response into an easy-to-scan profile.',
+      'Practices the fundamentals of working with a public API: controlled input, fetch lifecycle states, basic response typing, request cancellation, and accessible data visualization.',
+    ],
+    codeIntro: 'Fetch a Pokémon from this endpoint and model the fields you use:',
+    code: `const POKEMON_API = "https://pokeapi.co/api/v2/pokemon";
+
+// Example: GET https://pokeapi.co/api/v2/pokemon/pikachu
+type Pokemon = {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  sprites: {
+    front_default: string | null;
+  };
+  types: Array<{
+    type: { name: string };
+  }>;
+  stats: Array<{
+    base_stat: number;
+    stat: { name: string };
+  }>;
+};`,
+    requirements: [
+      'Start by loading Pikachu, then let the user search by Pokémon name or Pokédex number.',
+      'Trim and normalize the search value before building the request URL.',
+      'Show distinct loading, error, and success states.',
+      'Treat a not-found response as a useful message rather than a generic failure.',
+      'Display the Pokémon name, Pokédex number, sprite, height, weight, and types.',
+      'Visualize each base stat with a labeled horizontal bar whose value is also available as text.',
+      'Disable or otherwise guard against an empty search.',
+      'Ensure an older request cannot replace the result of a newer search.',
+      'Keep the last successful profile visible only if that behavior is intentional and clearly communicated.',
+    ],
+    constraint:
+      'Use the browser fetch API and plain HTML/CSS for the visualization. Do not install a charting or request library.',
+    followUps: [
+      'Which values belong in state, and which can be derived from the response during render?',
+      'How would you cancel an obsolete request when a user searches again quickly?',
+      'How would you make the stat bars understandable without relying on color or width alone?',
+      'What would you cache if users frequently revisit the same Pokémon?',
+    ],
+    solutionPath: 'src/problems/11-pokeapi/PokeApiSolution.tsx',
+    Solution: PokeApiSolution,
+  },
 ]
+
+export const problems = [...problemDefinitions].sort(
+  (first, second) => first.number - second.number,
+)
 
 export function getProblemBySlug(slug: string) {
   return problems.find((problem) => problem.slug === slug)

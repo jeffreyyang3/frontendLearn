@@ -2,31 +2,14 @@ import { useState, useEffect } from "react";
 import { fetchSuggestions } from "./autocompleteApi";
 import type { Suggestion } from "./autocompleteApi";
 
-interface QueryChangeInfo {
-  timeout: ReturnType<typeof setTimeout>;
-  abortController: AbortController;
-}
-
 export default function AutocompleteSolution() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState<Suggestion[]>([]);
   const [loading, setIsLoading] = useState(false);
-  const [queryChangeInfo, setQueryChangeInfo] =
-    useState<QueryChangeInfo | null>(null);
 
   useEffect(() => {
-    if (searchQuery.trim().length) {
-      handleQueryChange(searchQuery);
-    }
-  }, [searchQuery]);
-
-  const handleQueryChange = (val: string) => {
+    if (!searchQuery.trim().length) return;
     setIsLoading(true);
-    if (queryChangeInfo !== null) {
-      const { timeout, abortController } = queryChangeInfo;
-      clearTimeout(timeout);
-      abortController.abort();
-    }
     const abortController = new AbortController();
 
     const timeout = setTimeout(async () => {
@@ -39,17 +22,18 @@ export default function AutocompleteSolution() {
         );
         setSearchSuggestions(suggestions);
         setIsLoading(false);
-      } catch (e) {
+      } catch {
         if (abortController.signal.aborted) {
           console.log("aborted");
         }
       }
     }, 300);
-    setQueryChangeInfo({
-      timeout,
-      abortController,
-    });
-  };
+
+    return () => {
+      abortController.abort();
+      clearTimeout(timeout);
+    };
+  }, [searchQuery]);
 
   return (
     <div>

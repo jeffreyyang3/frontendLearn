@@ -440,6 +440,52 @@ Do not mutate the supplied tree and do not add UI state directly to its nodes.
 
 ---
 
+## 11. Pokémon Stat Viewer
+
+Build a small data explorer that fetches a Pokémon by name or Pokédex number
+and turns its response into an easy-to-scan profile.
+
+Starting endpoint:
+
+```ts
+const POKEMON_API = "https://pokeapi.co/api/v2/pokemon";
+
+// Example: GET `${POKEMON_API}/pikachu`
+```
+
+Model only the response fields the interface uses: `id`, `name`, `height`,
+`weight`, `sprites.front_default`, `types`, and `stats`.
+
+### Requirements
+
+- Start by loading Pikachu, then let the user search by Pokémon name or
+  Pokédex number.
+- Trim and normalize the search value before building the request URL.
+- Show distinct loading, error, and success states.
+- Treat a not-found response as a useful message rather than a generic
+  failure.
+- Display the Pokémon name, Pokédex number, sprite, height, weight, and types.
+- Visualize each base stat with a labeled horizontal bar whose value is also
+  available as text.
+- Disable or otherwise guard against an empty search.
+- Ensure an older request cannot replace the result of a newer search.
+- Keep the last successful profile visible only if that behavior is
+  intentional and clearly communicated.
+
+Use the browser `fetch` API and plain HTML/CSS for the visualization. Do not
+install a charting or request library.
+
+### Follow-up discussion
+
+- Which values belong in state, and which can be derived from the response
+  during render?
+- How would you cancel an obsolete request when a user searches again quickly?
+- How would you make the stat bars understandable without relying on color or
+  width alone?
+- What would you cache if users frequently revisit the same Pokémon?
+
+---
+
 # Suggested Interview Evaluation
 
 Across all problems, look for:
